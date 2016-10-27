@@ -1,11 +1,11 @@
 # SIME stack
 #
 # This image includes the following tools
-# - Ubuntu 14.04
+# - Ubuntu 16.04
 #
 # Version 1.0
 
-FROM ubuntu:14.04
+FROM ubuntu:16.04
 MAINTAINER Pascal Obstetar <pascal.obstetar@gmail.com>
 
 ADD . /bd_build
@@ -15,5 +15,5 @@ RUN /bd_build/prepare.sh && \
     /bd_build/utilities.sh && \
     /bd_build/cleanup.sh
 
-ENTRYPOINT ["/sbin/my_init", "--"]
+ENTRYPOINT ["/sbin/my_init"]
 
