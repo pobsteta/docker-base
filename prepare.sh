@@ -3,11 +3,6 @@ set -e
 source /bd_build/buildconfig
 set -x
 
-## Temporarily disable dpkg fsync to make building faster.
-if [[ ! -e /etc/dpkg/dpkg.cfg.d/docker-apt-speedup ]]; then
-	echo force-unsafe-io > /etc/dpkg/dpkg.cfg.d/docker-apt-speedup
-fi
-
 ## Prevent initramfs updates from trying to run grub and lilo.
 ## https://journal.paul.querna.org/articles/2013/10/15/docker-ubuntu-on-rackspace/
 ## http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=594189
@@ -38,9 +33,12 @@ $minimal_apt_get_install apt-transport-https ca-certificates
 ## Install add-apt-repository
 $minimal_apt_get_install software-properties-common
 
+## Upgrade all packages.
+apt-get dist-upgrade -y --no-install-recommends
+
 ## Fix locale.
-$minimal_apt_get_install language-pack-fr
-locale-gen fr_FR
-update-locale LANG=fr_FR.UTF-8 LC_CTYPE=fr_FR.UTF-8
-echo -n fr_FR.UTF-8 > /etc/container_environment/LANG
-echo -n fr_FR.UTF-8 > /etc/container_environment/LC_CTYPE
+$minimal_apt_get_install language-pack-en
+locale-gen en_US
+update-locale LANG=en_US.UTF-8 LC_CTYPE=en_US.UTF-8
+echo -n en_US.UTF-8 > /etc/container_environment/LANG
+echo -n en_US.UTF-8 > /etc/container_environment/LC_CTYPE
